@@ -1,6 +1,6 @@
 'use strict';
 
-import './popup.css';
+// import './popup.css';
 
 (function() {
   // We will make use of Storage API to get and store `count` value
@@ -93,9 +93,12 @@ import './popup.css';
         setupCounter(count);
       }
     });
+
+    document.getElementById('settings').href = `chrome-extension://${chrome.runtime.id}/options.html`;
   }
 
   document.addEventListener('DOMContentLoaded', restoreCounter);
+
 
   // Communicate with background file by sending a message
   chrome.runtime.sendMessage(
@@ -109,4 +112,7 @@ import './popup.css';
       console.log(response.message);
     }
   );
+
+
+  console.log(chrome.runtime.id)
 })();
