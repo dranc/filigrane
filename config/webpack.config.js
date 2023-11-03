@@ -8,11 +8,12 @@ const PATHS = require('./paths');
 // Merge webpack configuration files
 const config = merge(common, {
   entry: {
-    shared: PATHS.src + '/shared.ts',
     popup: PATHS.src + '/popup.ts',
-    popupbackup: PATHS.src + '/popup-backup.js',
     contentScript: PATHS.src + '/contentScript.ts',
     background: PATHS.src + '/background.js',
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
   },
   module: {
     rules: [

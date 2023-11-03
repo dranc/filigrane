@@ -1,7 +1,47 @@
 // import { MessageTypes } from "./shared";
 
+import { FiligraneServices } from "./filigrane.services";
+
+
+
 (() => {
+  let filesWithFiligrane :File[];
+
+  function prepareInPlugin() {
+    const buttonAddFiligrane = document.getElementById('add-filigrane')!;
+    const buttonDownload = document.getElementById('download')!;
+
+    buttonAddFiligrane.addEventListener('click', async  () => {
+      filesWithFiligrane = [];
+
+      buttonAddFiligrane.setAttribute('disabled', 'true');
+      buttonDownload.setAttribute('disabled', 'true');
+
+      const files = (document.getElementById('input-file')! as HTMLInputElement).files!;
+      if (files.length) {
+        for(const filefromInput of files) {
+          const file = await FiligraneServices.addFiligraneToFile(filefromInput);
+          filesWithFiligrane.push(file)
+        }
+      }
+
+      buttonAddFiligrane.removeAttribute('disabled');
+      buttonDownload.removeAttribute('disabled');
+    });
+
+    buttonDownload.addEventListener('click', async  () => {
+      console.log('download')
+      for(const file of filesWithFiligrane) {
+        // let container = new DataTransfer();
+        // container.items.add(file);
+        chrome.downloads.download({ url: URL.createObjectURL(file), filename: file.name });
+      }      
+    });
+  }
+
     function main() {
+        
+
         console.log('main')
         // document.getElementById('input-file')!.onchange((ev) => {
 
@@ -53,4 +93,5 @@
   
     console.log('before')
     document.addEventListener('DOMContentLoaded', main);
+    document.addEventListener('DOMContentLoaded', prepareInPlugin);
 })();
