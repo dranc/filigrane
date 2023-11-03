@@ -6,6 +6,19 @@
     <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
+  <div>
+    <input id="input-file" type="file">
+    <button id="add-filigrane">Add Filigrane</button>
+    <button id="download">Download file</button>
+  </div>
+  <div>
+    Detected:
+    <p id="scan">Restart scan</p>
+    <div id="results">
+
+    </div>
+  </div>
+
   <div class="app">
     <p class="counter-label">Counter</p>
     <div id="counter" class="counter"></div>
@@ -19,8 +32,10 @@
     <p class="title">Chrome Extension is Ready!</p>
     <p class="subtitle">Start by updating <code>popup.html</code></p>
   </div>
+  <a id="settings" href="#">Settings</a>
 
   <script src="popup.js"></script>
+  <script src="popupbackup.js"></script>
 
   <!--
     This HTML file opens when you click on icon from the toolbar.
