@@ -19,7 +19,7 @@ function sleep(ms: number) {
   });
 }
 
-console.log('content string')
+console.log('content string');
 const inputs = document.body.querySelectorAll<HTMLInputElement>('input[type=file]');
 
 // chrome.action.setBadgeText(
@@ -36,7 +36,7 @@ const inputs = document.body.querySelectorAll<HTMLInputElement>('input[type=file
 // }, 2000);
 
 inputs.forEach((input) => {
-  return
+  return;
   console.log('input', input);
   input.onchange = async (ev: Event) => {
     if (input.files) {
@@ -122,42 +122,53 @@ inputs.forEach((input) => {
 
 // // // Listen for message
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  
-console.log('onMessage', request.type )
+  console.log('onMessage', request.type);
   if (request.type === 'SCAN') {
-    scanForInput()
+    const tmp = scanForInput();
+    console.log(tmp);
+    sendResponse(tmp);
   }
-})
+});
+
+function makeid(length: number): string {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  let counter = 0;
+  while (counter < length) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    counter += 1;
+  }
+  return result;
+}
 
 function scanForInput() {
   const inputElements = document.body.querySelectorAll<HTMLInputElement>('input[type=file]');
-  const inputs : {name: string, index: number, files: {name: string, size: number, type: string}[]}[] = [];
+  const inputs: { name: string; index: number; id: string; files: { name: string; size: number; type: string }[] }[] = [];
 
   inputElements.forEach((input, index) => {
-    console.log(input)
+    console.log(input);
     inputs[index] = {
+      id: makeid(7),
       name: input.name,
       index,
-      files: []
+      files: [],
     };
+
+    input.setAttribute('filigrane-id', inputs[index].id);
 
     input.onchange = async (ev: Event) => {
       const files = [];
-      for(let i=0; i<input.files!.length;i++){
+      for (let i = 0; i < input.files!.length; i++) {
         files.push({
           name: input.files![i].name,
           size: input.files![i].size,
           type: input.files![i].type,
-        })
+        });
       }
 
-      inputs[index] = {
-        name: input.name,
-        index,
-        files
-      };
-
-      console.log('sending ', inputs)
+      inputs[index].files = files;
+      console.log('sending ', inputs);
       chrome.runtime.sendMessage({
         type: 'INPUTS_FILE_UPDATE',
         payload: {
@@ -173,9 +184,11 @@ function scanForInput() {
       inputs,
     },
   });
+
+  return inputs;
 }
 
-scanForInput()
+scanForInput();
 
 // 'use strict';
 
