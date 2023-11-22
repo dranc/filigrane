@@ -11,6 +11,7 @@ const config = merge(common, {
     popup: PATHS.src + '/popup.ts',
     contentScript: PATHS.src + '/contentScript.ts',
     background: PATHS.src + '/background.js',
+    index: PATHS.src + '/index.ts'
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],

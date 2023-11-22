@@ -15,12 +15,12 @@ function sleep(ms: number) {
 }
 
 export namespace FiligraneServices {
-  export async function addFiligraneToFile(file: File): Promise<File> {
+  export async function addFiligraneToFile(file: File, watermark: string = 'this is a test from code'): Promise<File> {
     // const uploadUrl = 'https://api.filigrane.beta.gouv.fr/api/document/files';
 
     var formData = new FormData();
     formData.append('files', file);
-    formData.append('watermark', 'this is a test from code');
+    formData.append('watermark', watermark);
 
     const { data, status } = await axios.post<ResponseData>(
       'https://api.filigrane.beta.gouv.fr/api/document/files',
