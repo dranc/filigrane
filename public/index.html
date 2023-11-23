@@ -1,22 +1,37 @@
 <html>
-    <head>
+  <head>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <h1>Welcome to Filigrane</h1>
+    <p>Drop any file or click here to add filigrane to them.</p>
 
-    </head>
-    <body>
-        <h1>Welcome to Filigrane</h1>
-        <p>Drop any file or click here to add filigrane to them.</p>
-        
-            <input id="input-file" type="file" multiple="true">
-            <div id="files">
-                <div class="file">
-                    <img src="icons/icon_16.png">
-                    <label>titre.jpg</label>
-                </div>
-            </div>
-            <input id="input-text" type="text">
-            <button id="submit">Add filigrane</button>
-        
-        
-        <script src="index.js"></script>
-    </body>
+    <input id="input-file" type="file" multiple="true" />
+
+    <div id="files" class="files">
+      <div class="file">
+        <input class="selected" type="checkbox" checked="true" />
+        <img class="preview" src="icons/icon_16.png" />
+        <label class="name">titre.jpg</label>
+        <label class="size">1000ko</label>
+        <div class="loader">
+          <label>Sending</label>
+          <label>Waiting for response</label>
+          <label>Something went wrong</label>
+          <label>Ok</label>
+        </div>
+        <div class="action">
+          <button id="revert">Revert</button>
+          <button id="restart">Restart</button>
+          <button id="preview">Preview</button>
+          <button id="download">Download</button>
+        </div>
+      </div>
+    </div>
+
+    <input id="input-text" type="text" value="Gogo" />
+    <button id="submit">Add filigrane</button>
+
+    <script src="index.js"></script>
+  </body>
 </html>
