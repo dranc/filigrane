@@ -11,20 +11,24 @@ const config = merge(common, {
     popup: PATHS.src + '/popup.ts',
     contentScript: PATHS.src + '/contentScript.ts',
     background: PATHS.src + '/background.js',
-    index: PATHS.src + '/index.ts'
+    index: PATHS.src + '/index.ts',
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
   module: {
     rules: [
-       {
-          test: /\.tsx?$/,
-          loader: "ts-loader",
-          exclude: /node_modules/,
-       },
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
     ],
- },
+  },
 });
 
 module.exports = config;
