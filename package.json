@@ -29,6 +29,7 @@
     "webpack-merge": "^5.10.0"
   },
   "dependencies": {
-    "downloadjs": "^1.4.7"
+    "downloadjs": "^1.4.7",
+    "picnic": "^7.1.0"
   }
 }

@@ -3,34 +3,48 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <h1>Welcome to Filigrane</h1>
-    <p>Drop any file or click here to add filigrane to them.</p>
+    <nav class="demo imponent">
+      <a href="" class="brand">
+        <img class="logo" src="icons/icon_128.png" />
+        <span>Filigrane</span>
+      </a>
+    </nav>
+    <div class="content">
+      <div class="main">
+        <p>Drop any file or click here to add filigrane to them.</p>
 
-    <input id="input-file" type="file" multiple="true" />
+        <input id="input-file" type="file" multiple="true" />
 
-    <div id="files" class="files">
-      <div class="file">
-        <input class="selected" type="checkbox" checked="true" />
-        <img class="preview" src="icons/icon_16.png" />
-        <label class="name">titre.jpg</label>
-        <label class="size">1000ko</label>
-        <div class="loader">
-          <label>Sending</label>
-          <label>Waiting for response</label>
-          <label>Something went wrong</label>
-          <label>Ok</label>
+        <div id="files" class="files">
+          <div class="file">
+            <input class="selected" type="checkbox" checked="true" />
+            <img class="preview" src="icons/icon_16.png" />
+            <label class="name">titre.jpg</label>
+            <label class="size">1000ko</label>
+            <div class="loader">
+              <label>Sending</label>
+              <label>Waiting for response</label>
+              <label>Something went wrong</label>
+              <label>Ok</label>
+            </div>
+            <div class="action">
+              <button id="revert">Revert</button>
+              <button id="restart">Restart</button>
+              <button id="preview">Preview</button>
+              <button id="download">Download</button>
+            </div>
+          </div>
         </div>
-        <div class="action">
-          <button id="revert">Revert</button>
-          <button id="restart">Restart</button>
-          <button id="preview">Preview</button>
-          <button id="download">Download</button>
+      </div>
+      <div class="bottom flex three grow">
+        <div class="two-third">
+          <input id="input-text" type="text" value="Gogo" />
+        </div>
+        <div>
+          <button id="submit">Let's go</button>
         </div>
       </div>
     </div>
-
-    <input id="input-text" type="text" value="Gogo" />
-    <button id="submit">Add filigrane</button>
 
     <script src="index.js"></script>
   </body>
