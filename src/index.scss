@@ -1,5 +1,42 @@
-.files {
-  .file[id=''] {
-    display: none;
+@import url('~picnic/picnic.min.css');
+
+$height: 500px;
+$width: 350px;
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  background-color: lightgrey;
+  position: relative;
+  margin: auto;
+  height: $height;
+  width: $width;
+  padding: 5px;
+
+  .main {
+    padding: 10px;
+    margin: auto;
+  }
+
+  .bottom {
+    position: absolute;
+    bottom: 0;
+    margin: auto;
+    left: 0;
+    right: 0;
+
+    div {
+      margin: auto;
+    }
   }
 }
+
+// .files {
+//   .file {
+//     display: none;
+//   }
+// }
