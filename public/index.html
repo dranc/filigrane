@@ -11,37 +11,23 @@
     </nav>
     <div class="content">
       <div class="main">
-        <p>Drop any file or click here to add filigrane to them.</p>
+        <p>Click here to add filigrane to any file.</p>
 
         <input id="input-file" type="file" multiple="true" />
 
         <div id="files" class="files">
-          <div class="file">
-            <input class="selected" type="checkbox" checked="true" />
-            <img class="preview" src="icons/icon_16.png" />
-            <label class="name">titre.jpg</label>
-            <label class="size">1000ko</label>
-            <div class="loader">
-              <label>Sending</label>
-              <label>Waiting for response</label>
-              <label>Something went wrong</label>
-              <label>Ok</label>
-            </div>
-            <div class="action">
-              <button id="revert">Revert</button>
-              <button id="restart">Restart</button>
-              <button id="preview">Preview</button>
-              <button id="download">Download</button>
-            </div>
+          <div class="file" style="display: none">
+            <label class="name"></label>
+            <div class="actions"></div>
           </div>
         </div>
       </div>
       <div class="bottom flex three grow">
         <div class="two-third">
-          <input id="input-text" type="text" value="Gogo" />
+          <input id="input-text" type="text" placeholder="Enter any text" />
         </div>
         <div>
-          <button id="submit">Let's go</button>
+          <button id="submit">Add</button>
         </div>
       </div>
     </div>
