@@ -1,5 +1,7 @@
 import './index.scss';
 
+import { saveAs } from 'file-saver';
+
 import { FiligraneServices } from './filigrane.services';
 
 (() => {
@@ -23,32 +25,46 @@ import { FiligraneServices } from './filigrane.services';
         newFileElement.id = id;
 
         (newFileElement.getElementsByClassName('name')[0] as HTMLElement).innerText = file.name;
-        (newFileElement.getElementsByClassName('size')[0] as HTMLElement).innerText = file.size.toString();
 
         files.appendChild(newFileElement);
         filesMap.set(id, file);
+
+        newFileElement.style.display = '';
       }
     });
 
     submit!.onclick = async (ev) => {
-      if (inputText.value && files.children.length > 0) {
-        for (const fileElt of files.children) {
-          if (fileElt.id && (fileElt.getElementsByClassName('selected')[0] as HTMLInputElement).checked) {
-            console.log(`sending ${fileElt.id}`);
-            const file = filesMap.get(fileElt.id);
-            if (!file) {
-              throw Error(`File ${fileElt.id} lost ?`);
-            }
-            const newFile = await FiligraneServices.addFiligraneToFile(file, inputText.value);
-            const seePreview = document.createElement('button');
-            seePreview.innerText = 'see preview';
-            seePreview.onclick = () => {
-              console.log(newFile.name);
-              const t = new Blob([newFile], { type: 'application/pdf' });
-              window.open(URL.createObjectURL(t));
-            };
-            fileElt.appendChild(seePreview);
+      const filigrane = inputText.value || `Added from Filigrane.app on ${new Date().toDateString()}.`;
+      for (const fileElt of files.children) {
+        if (fileElt.id) {
+          console.log(`sending ${fileElt.id}`);
+          const file = filesMap.get(fileElt.id);
+          if (!file) {
+            throw Error(`File ${fileElt.id} lost ?`);
           }
+
+          const actions = fileElt.getElementsByClassName('actions')[0] as HTMLElement;
+
+          actions.innerText = 'Adding Filigrane';
+
+          const newFile = await FiligraneServices.addFiligraneToFile(file, filigrane);
+          const newFileBlob = new Blob([newFile], { type: 'application/pdf' });
+
+          const preview = document.createElement('button');
+          preview.innerText = 'Preview';
+          preview.onclick = () => {
+            window.open(URL.createObjectURL(newFileBlob));
+          };
+
+          const download = document.createElement('button');
+          download.innerText = 'Download';
+          download.onclick = () => {
+            saveAs(newFileBlob, `${file.name}.pdf`);
+          };
+
+          actions.innerHTML = '';
+          actions.appendChild(preview);
+          actions.appendChild(download);
         }
       }
     };
