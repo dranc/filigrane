@@ -1,8 +1,6 @@
-import './index.scss';
-
 import { saveAs } from 'file-saver';
 
-import { FiligraneServices } from './filigrane.services';
+import { FiligraneServices } from './services/filigrane.services';
 
 (() => {
   const filesMap = new Map<string, File>();

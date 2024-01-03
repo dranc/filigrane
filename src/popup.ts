@@ -1,4 +1,5 @@
-import { FiligraneServices } from './filigrane.services';
+import { FiligraneServices } from "./services/filigrane.services";
+
 
 (() => {
   let filesWithFiligrane: File[];
