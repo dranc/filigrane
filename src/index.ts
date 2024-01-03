@@ -1,5 +1,3 @@
-import './asset/style/index.scss';
-
 import { saveAs } from 'file-saver';
 
 import { FiligraneServices } from './services/filigrane.services';
