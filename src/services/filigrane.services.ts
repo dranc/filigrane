@@ -15,13 +15,17 @@ function sleep(ms: number) {
 }
 
 export namespace FiligraneServices {
-  export async function addFiligraneToFile(file: File, watermark: string = 'this is a test from code'): Promise<File> {
+  export async function addFiligraneToFile(
+    file: File,
+    watermark: string = 'this is a test from code',
+    onEvent: (step: string) => void,
+  ): Promise<File> {
     // const uploadUrl = 'https://api.filigrane.beta.gouv.fr/api/document/files';
 
     var formData = new FormData();
     formData.append('files', file);
     formData.append('watermark', watermark);
-
+    onEvent('Sending file to beta.gouv.fr.');
     const { data, status } = await axios.post<ResponseData>(
       'https://api.filigrane.beta.gouv.fr/api/document/files',
       formData,
@@ -35,14 +39,17 @@ export namespace FiligraneServices {
         },
       },
     );
-    console.log(data, status);
 
+    onEvent('File has been sent.');
+
+    let cpt = 0;
     let res;
     let restart = false;
     do {
       restart = false;
       try {
         res = await axios.get<ResponseData2>(`https://api.filigrane.beta.gouv.fr/api/document/url/${data.token}`);
+        onEvent(`Trying to retrieve new file for the ${cpt} time.`);
       } catch (error) {
         console.log(error);
 
@@ -57,7 +64,7 @@ export namespace FiligraneServices {
       }
     } while (restart);
 
-    console.log(res);
+    onEvent('File is ready will delete it.');
 
     var param = {
       type: 'download',
@@ -68,6 +75,9 @@ export namespace FiligraneServices {
     const test = await axios.get(param.url, {
       responseType: 'blob',
     });
+
+    onEvent('File downloaded.');
+
     return new File([test.data], `${file.name}-filigrane.pdf`);
     // let container = new DataTransfer();
     // container.items.add(newFile);

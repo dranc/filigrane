@@ -43,9 +43,7 @@ import { FiligraneServices } from './services/filigrane.services';
 
           const actions = fileElt.getElementsByClassName('actions')[0] as HTMLElement;
 
-          actions.innerText = 'Adding Filigrane';
-
-          const newFile = await FiligraneServices.addFiligraneToFile(file, filigrane);
+          const newFile = await FiligraneServices.addFiligraneToFile(file, filigrane, (step) => (actions.innerText = step));
           const newFileBlob = new Blob([newFile], { type: 'application/pdf' });
 
           const preview = document.createElement('button');

@@ -17,21 +17,25 @@
           <input id="input-file" type="file" multiple="true" />
         </header>
 
-        <div id="files" class="files" style="overflow-y: scroll; height: 50%;">
-          <div class="file stack">
+        <div id="files" class="files" style="overflow-y: scroll; height: 50%">
+          <div class="file stack" style="display: none">
             <div class="flex six">
               <span class="fourth">
-                <img class="center" src="icons/icon_48.png" height="48" width="48" />
+                <img
+                  class="fourth center"
+                  src="icons/icon_48.png"
+                  style="padding: 10px; margin: auto; display: block; width: 100%; overflow: hidden"
+                />
               </span>
               <span class="three-fourth">
                 <label class="name">This is a name</label>
-                <br>
+                <br />
                 <small class="size">6ko</small>
                 <div class="actions">
-                  <span class="button stack">Revert</span>
-                  <span class="button stack">Reload</span>
-                  <span class="button stack">Preview</span>
-                  <span class="button stack">Download</span>
+                  <button>Revert</button>
+                  <button>Reload</button>
+                  <button>Preview</button>
+                  <button>Download</button>
                 </div>
               </span>
             </div>
@@ -39,9 +43,12 @@
         </div>
 
         <footer>
-          <div class="menu">
-          <input id="input-text" type="text" placeholder="Enter any text" />
-          <button id="submit" type="submit">Add</button>
+          <div class="flex three">
+            <input class="two-third" id="input-text" type="text" placeholder="Enter any text" />
+            <span>
+              <button id="submit" type="submit" style="margin: 0 auto">Add</button>
+            </span>
+          </div>
         </footer>
       </article>
     </div>
