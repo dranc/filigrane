@@ -1,42 +1,42 @@
 @import '~picnic/src/picnic';
 
-$height: 500px;
-$width: 350px;
+// $height: 500px;
+// $width: 350px;
 
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+// body {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
 
-.content {
-  background-color: lightgrey;
-  position: relative;
-  margin: auto;
-  height: $height;
-  width: $width;
-  padding: 5px;
+// .content {
+//   background-color: lightgrey;
+//   // position: relative;
+//   // margin: auto;
+//   height: $height;
+//   // width: $width;
+//   // padding: 5px;
 
-  .main {
-    padding: 10px;
-    margin: auto;
-  }
+//   // .main {
+//   //   padding: 10px;
+//   //   margin: auto;
+//   // }
 
-  .bottom {
-    position: absolute;
-    bottom: 0;
-    margin: auto;
-    left: 0;
-    right: 0;
+//   .bottom {
+//     position: absolute;
+//     bottom: 0;
+//     margin: auto;
+//     left: 0;
+//     right: 0;
 
-    div {
-      margin: auto;
-    }
-  }
-}
-
-// .files {
-//   .file {
-//     display: none;
+//     div {
+//       margin: auto;
+//     }
 //   }
 // }
+
+// // .files {
+// //   .file {
+// //     display: none;
+// //   }
+// // }

@@ -3,35 +3,48 @@
     <link rel="stylesheet" href="style/index.min.css" />
   </head>
   <body>
-    <nav class="demo imponent">
+    <nav class="imponent">
       <a href="" class="brand">
         <img class="logo" src="icons/icon_128.png" />
         <span>Filigrane</span>
       </a>
     </nav>
-    <div class="content">
-      <div class="main">
-        <p>Click here to add filigrane to any file.</p>
+    <div class="flex center four" style="padding-top: 3em; align-items: center; height: 100%">
+      <article class="card full half-600 third-1200">
+        <header>
+          <p>Click here to add filigrane to any file.</p>
 
-        <input id="input-file" type="file" multiple="true" />
+          <input id="input-file" type="file" multiple="true" />
+        </header>
 
-        <div id="files" class="files">
-          <div class="file" style="display: none">
-            <label class="name"></label>
-            <div class="actions"></div>
+        <div id="files" class="files" style="overflow-y: scroll; height: 50%;">
+          <div class="file stack">
+            <div class="flex six">
+              <span class="fourth">
+                <img class="center" src="icons/icon_48.png" height="48" width="48" />
+              </span>
+              <span class="three-fourth">
+                <label class="name">This is a name</label>
+                <br>
+                <small class="size">6ko</small>
+                <div class="actions">
+                  <span class="button stack">Revert</span>
+                  <span class="button stack">Reload</span>
+                  <span class="button stack">Preview</span>
+                  <span class="button stack">Download</span>
+                </div>
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="bottom flex three grow">
-        <div class="two-third">
-          <input id="input-text" type="text" placeholder="Enter any text" />
-        </div>
-        <div>
-          <button id="submit">Add</button>
-        </div>
-      </div>
-    </div>
 
+        <footer>
+          <div class="menu">
+          <input id="input-text" type="text" placeholder="Enter any text" />
+          <button id="submit" type="submit">Add</button>
+        </footer>
+      </article>
+    </div>
     <script src="index.js"></script>
   </body>
 </html>
