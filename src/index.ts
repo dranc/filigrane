@@ -3,7 +3,7 @@ import { saveAs } from 'file-saver';
 import { FiligraneServices } from './services/filigrane.services';
 
 (() => {
-  const filesMap = new Map<string, File>();
+  const filigraneServices = new FiligraneServices();
 
   document.addEventListener('DOMContentLoaded', () => {
     const inputFile = document.getElementById('input-file') as HTMLInputElement;
@@ -15,54 +15,61 @@ import { FiligraneServices } from './services/filigrane.services';
 
     inputFile.addEventListener('change', (ev) => {
       for (const file of inputFile.files!) {
-        const id = crypto.randomUUID();
-
-        console.log(fileExample);
+        const id = filigraneServices.prepareFile(file);
 
         const newFileElement = fileExample.cloneNode(true) as HTMLElement;
         newFileElement.id = id;
+        console.log(URL.createObjectURL(filigraneServices.getBlobFor(id)));
+        const preview = newFileElement.querySelector('#preview') as HTMLEmbedElement;
+        const blob = filigraneServices.getBlobFor(id);
+        preview.type = blob.type;
+        preview.src = URL.createObjectURL(blob);
 
-        (newFileElement.getElementsByClassName('name')[0] as HTMLElement).innerText = file.name;
+        (newFileElement.querySelector('#name') as HTMLElement).innerText = file.name;
+        (newFileElement.querySelector('#size') as HTMLElement).innerText = file.size.toString();
+
+        newFileElement.querySelector('#preview')!.addEventListener('click', () => {
+          const url = URL.createObjectURL(filigraneServices.getBlobFor(id));
+          console.log(id);
+          console.log(url);
+          window.open(url);
+        });
+
+        newFileElement.querySelector('#download')!.addEventListener('click', () => {
+          saveAs(filigraneServices.getBlobFor(id), `${file.name}.pdf`);
+        });
 
         files.appendChild(newFileElement);
-        filesMap.set(id, file);
 
         newFileElement.style.display = '';
       }
     });
 
     submit!.onclick = async (ev) => {
-      const filigrane = inputText.value || `Added from Filigrane.app on ${new Date().toDateString()}.`;
       for (const fileElt of files.children) {
         if (fileElt.id) {
-          console.log(`sending ${fileElt.id}`);
-          const file = filesMap.get(fileElt.id);
-          if (!file) {
-            throw Error(`File ${fileElt.id} lost ?`);
-          }
+          fileElt.classList.add('loading');
 
-          const actions = fileElt.getElementsByClassName('actions')[0] as HTMLElement;
+          const process = fileElt.getElementsByClassName('processing')[0] as HTMLElement;
 
-          actions.innerText = 'Adding Filigrane';
+          await filigraneServices.addFiligraneToFile(
+            fileElt.id,
+            inputText.value,
+            (step) => (process.innerText = step),
+            () => {
+              const url = URL.createObjectURL(filigraneServices.getBlobFor(fileElt.id));
 
-          const newFile = await FiligraneServices.addFiligraneToFile(file, filigrane);
-          const newFileBlob = new Blob([newFile], { type: 'application/pdf' });
+              const preview = fileElt.querySelector('#preview') as HTMLEmbedElement;
+              const blob = filigraneServices.getBlobFor(fileElt.id);
+              preview.type = blob.type;
+              preview.src = URL.createObjectURL(blob);
 
-          const preview = document.createElement('button');
-          preview.innerText = 'Preview';
-          preview.onclick = () => {
-            window.open(URL.createObjectURL(newFileBlob));
-          };
-
-          const download = document.createElement('button');
-          download.innerText = 'Download';
-          download.onclick = () => {
-            saveAs(newFileBlob, `${file.name}.pdf`);
-          };
-
-          actions.innerHTML = '';
-          actions.appendChild(preview);
-          actions.appendChild(download);
+              fileElt.classList.remove('loading');
+            },
+            (message: string) => {
+              fileElt.classList.remove('loading');
+            },
+          );
         }
       }
     };
