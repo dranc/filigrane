@@ -14,31 +14,48 @@ function sleep(ms: number) {
   });
 }
 
-export namespace FiligraneServices {
-  export async function addFiligraneToFile(
-    file: File,
-    watermark: string = 'this is a test from code',
+export class FiligraneServices {
+  private readonly data: Map<string, { origin: File; filigrane?: File }> = new Map();
+
+  public prepareFile(file: File): string {
+    let id: string;
+
+    do {
+      id = crypto.randomUUID();
+    } while (this.data.has(id));
+
+    this.data.set(id, { origin: file });
+
+    return id;
+  }
+
+  public async addFiligraneToFile(
+    id: string,
+    watermark: string = `Added with Filigrane.app on ${new Date().toDateString()}.`,
     onEvent: (step: string) => void,
-  ): Promise<File> {
-    // const uploadUrl = 'https://api.filigrane.beta.gouv.fr/api/document/files';
+    onCompleted: () => void,
+    onError: (message: string) => void,
+  ): Promise<void> {
+    if (!this.data.has(id)) {
+      onError('File is not find in the data.');
+      return;
+    }
+
+    const file = this.data.get(id)!.origin;
 
     var formData = new FormData();
     formData.append('files', file);
     formData.append('watermark', watermark);
+
     onEvent('Sending file to beta.gouv.fr.');
-    const { data, status } = await axios.post<ResponseData>(
-      'https://api.filigrane.beta.gouv.fr/api/document/files',
-      formData,
-      // {
-      //   files: [new File(e.target.result, 'name.pdf')],
-      //   watermark: 'this is a test from code'
-      // } as SendData,
-      {
-        headers: {
-          Accept: 'application/json',
-        },
+
+    const baseUrl = 'https://api.filigrane.beta.gouv.fr/api/document';
+
+    const { data, status } = await axios.post<ResponseData>(`${baseUrl}/files`, formData, {
+      headers: {
+        Accept: 'application/json',
       },
-    );
+    });
 
     onEvent('File has been sent.');
 
@@ -48,15 +65,11 @@ export namespace FiligraneServices {
     do {
       restart = false;
       try {
-        res = await axios.get<ResponseData2>(`https://api.filigrane.beta.gouv.fr/api/document/url/${data.token}`);
-        onEvent(`Trying to retrieve new file for the ${cpt} time.`);
+        onEvent(`Trying to retrieve new file for the ${cpt} time(s).`);
+        res = await axios.get<ResponseData2>(`${baseUrl}/url/${data.token}`);
       } catch (error) {
-        console.log(error);
-
         if (error instanceof AxiosError && error.response) {
-          console.log(error.status);
           if (error.response.status === 404 || error.response.status === 409) {
-            console.log('sleep anbd restart');
             await sleep(1500);
             restart = true;
           }
@@ -68,7 +81,7 @@ export namespace FiligraneServices {
 
     var param = {
       type: 'download',
-      url: `https://api.filigrane.beta.gouv.fr/api/document/${data.token}`,
+      url: `${baseUrl}/${data.token}`,
       filename: file.name,
     };
 
@@ -76,13 +89,18 @@ export namespace FiligraneServices {
       responseType: 'blob',
     });
 
-    onEvent('File downloaded.');
+    onEvent('File ready.');
 
-    return new File([test.data], `${file.name}-filigrane.pdf`);
-    // let container = new DataTransfer();
-    // container.items.add(newFile);
-    // input.files = container.files;
+    this.data.get(id)!.filigrane = new File([test.data], `${file.name}-filigrane.pdf`);
 
-    // return data.token
+    onCompleted();
+  }
+
+  public getBlobFor(id: string): Blob {
+    const file = this.data.get(id)!;
+    if (file.filigrane) {
+      return new Blob([file.filigrane], { type: 'application/pdf' });
+    }
+    return new Blob([file.origin], { type: file.origin.type });
   }
 }

@@ -18,8 +18,8 @@ import { FiligraneServices } from './services/filigrane.services';
       const files = (document.getElementById('input-file')! as HTMLInputElement).files!;
       if (files.length) {
         for (const filefromInput of files) {
-          const file = await FiligraneServices.addFiligraneToFile(filefromInput, undefined, () => {});
-          filesWithFiligrane.push(file);
+          // const file = await FiligraneServices.addFiligraneToFile(filefromInput, undefined, () => {});
+          // filesWithFiligrane.push(file);
         }
       }
 

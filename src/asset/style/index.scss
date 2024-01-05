@@ -1,5 +1,26 @@
 @import '~picnic/src/picnic';
 
+.content {
+  padding-top: 3em;
+  align-items: center;
+  height: 100%;
+
+  .files {
+    overflow-y: scroll;
+    height: 50%;
+
+    .file {
+      &:not(.loading) .processing {
+        display: none;
+      }
+
+      &.loading .actions {
+        display: none;
+      }
+    }
+  }
+}
+
 // $height: 500px;
 // $width: 350px;
 

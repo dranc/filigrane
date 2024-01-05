@@ -9,7 +9,7 @@
         <span>Filigrane</span>
       </a>
     </nav>
-    <div class="flex center four" style="padding-top: 3em; align-items: center; height: 100%">
+    <div class="content flex center four">
       <article class="card full half-600 third-1200">
         <header>
           <p>Click here to add filigrane to any file.</p>
@@ -17,25 +17,25 @@
           <input id="input-file" type="file" multiple="true" />
         </header>
 
-        <div id="files" class="files" style="overflow-y: scroll; height: 50%">
+        <div id="files" class="files">
           <div class="file stack" style="display: none">
             <div class="flex six">
               <span class="fourth">
-                <img
+                <embed
+                  id="preview"
                   class="fourth center"
-                  src="icons/icon_48.png"
                   style="padding: 10px; margin: auto; display: block; width: 100%; overflow: hidden"
-                />
+                  alt="Click to see preview"
+                ></embed>
               </span>
               <span class="three-fourth">
-                <label class="name">This is a name</label>
+                <label id="name">This is a name</label>
                 <br />
-                <small class="size">6ko</small>
+                <small id="size">6ko</small>
+                <div class="processing"></div>
                 <div class="actions">
-                  <button>Revert</button>
-                  <button>Reload</button>
-                  <button>Preview</button>
-                  <button>Download</button>
+                  <!-- <button id="revert">Revert</button> -->
+                  <button id="download">Download</button>
                 </div>
               </span>
             </div>
